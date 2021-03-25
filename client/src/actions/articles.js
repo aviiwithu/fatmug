@@ -1,4 +1,4 @@
-import { FETCH_ALL, CREATE, DELETE, UPDATE} from '../constants/actionType';
+import { FETCH_ALL, CREATE, DELETE, UPDATE, GET_ONE,FETCH_USER_ART} from '../constants/actionType';
 
 import * as api from '../api/index'
 
@@ -9,6 +9,23 @@ export const getArt = (history)=>async (dispatch)=> {
     } catch (error) {
         console.log(error.message);
         history.push('/login');
+    }
+}
+export const getOne = (id)=>async (dispatch)=> {
+    try {
+        const {data} = await api.getOne(id);
+        dispatch({type:GET_ONE, payload:data});
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const getUserArt = (id)=>async (dispatch)=> {
+
+    try {
+        const {data} = await api.getUserArt(id);
+        dispatch({type:FETCH_USER_ART,data})
+    } catch (error) {
+        console.log(error);
     }
 }
 

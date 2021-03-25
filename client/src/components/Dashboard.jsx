@@ -6,7 +6,7 @@ import {Link, useHistory} from 'react-router-dom';
 import {getArt} from '../actions/articles'
 
 const Dashboard = ({setNavitems}) => {
-    const articles = useSelector((state)=> state.articles );
+    const articles = useSelector((state)=> state.articles.allArticles );
     const history = useHistory();
     const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ const Dashboard = ({setNavitems}) => {
                 <div>
                     {articles.map((art)=>(
                             <PostedArticle key={art._id}>
-                                <Link to={`/view/${art._id}`} >
+                                <Link to={`/art/${art._id}`} >
                                         <HeroArticleImage>
                                             <img src={art.selectedFile} alt='heroImage'/>
                                         </HeroArticleImage>

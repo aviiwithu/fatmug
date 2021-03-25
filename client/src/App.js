@@ -47,7 +47,7 @@ const clear =()=>{
         <Appbar navitems={navitems} currentId={currentId} setCurrentId={setCurrentId} handleSubmit={handleSubmit}  />
         <Route path='/' exact render={(props)=> (<Dashboard {...props} currentId={currentId} setCurrentId={setCurrentId} setNavitems={setNavitems} />) } />
         <Route path='/new' exact render={(props)=> (<CreateEditArticle {...props} clear={clear} article={article} handleSubmit={handleSubmit} setArticle={setArticle} currentId={currentId} setCurrentId={setCurrentId} setNavitems={setNavitems} />) } />
-        <Route path='/view/:id' exact render={(props)=> (<ViewArticle {...props} setNavitems={setNavitems} />) } />
+        <Route path='/art/:id' exact render={(props)=> (<ViewArticle {...props} setNavitems={setNavitems} />) } />
         <Route path='/articles' exact render={(props)=> (<SubmittedArticles {...props} currentId={currentId} setCurrentId={setCurrentId} setNavitems={setNavitems} />) } />
       </>
     </Switch>

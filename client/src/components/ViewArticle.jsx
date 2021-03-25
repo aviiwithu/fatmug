@@ -1,17 +1,36 @@
-import React,{useEffect} from 'react'
+import React,{useEffect,useState} from 'react'
 import styled from 'styled-components';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import moment from 'moment';
-import {useSelector} from 'react-redux';
+import {useSelector,useDispatch} from 'react-redux';
+import {getOne} from '../actions/articles'
 
 
 const ViewArticle = ({setNavitems,match}) => {
+    const dispatch = useDispatch();
+    const view = useSelector((state)=>state.view);
     const id = match.params.id;
-    const art = useSelector((state)=>state.articles.find((item)=>item._id===id) )
-    
+    const article = useSelector((state)=>state.articles.allArticles.find((item)=>item._id===id) );
+        
+    const [art, setArt] = useState(article);
+        
     useEffect(()=>{
-        setNavitems((navitems)=>({...navitems,item1:{...navitems.item1,text:'Write',type:''} }));      
-    },[setNavitems])
+                setNavitems((navitems)=>({...navitems,item1:{...navitems.item1,text:'Write',type:''} }));
+                async function fetchdata() {
+                    if(!article) {
+                        await dispatch(getOne(id));
+                        console.log("article is not available")
+                    }
+                }
+                fetchdata();
+    },[setNavitems,dispatch,article,id]);
+
+    useEffect(()=>{
+        if(!article) {
+            setArt(view);
+        }
+
+    },[view,article])
 
 
     return (

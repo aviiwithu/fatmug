@@ -1,17 +1,42 @@
-import {FETCH_ALL, CREATE, DELETE, UPDATE } from '../constants/actionType';
+import {FETCH_ALL, CREATE, DELETE, UPDATE,FETCH_USER_ART } from '../constants/actionType';
 
-export const articles=  (articles=[],action)=>{
+const initialState={
+    allArticles:[],
+    userArt:[]
+}
+
+export const articles=(state=initialState,action)=>{
     switch(action.type){
         case FETCH_ALL:
-            return action.payload;
+            return {
+                ...state,
+                allArticles:action.payload
+            };
+        case FETCH_USER_ART:
+            return {
+                ...state,
+                userArt:action.data
+            }
         case CREATE:
-                return [...articles, action.payload];
+                return {...state,
+                     allArticles:[...state.allArticles,action.payload],
+                     userArt:[...state.userArt,action.payload]
+                    };
         case UPDATE:
-                    return articles.map((article)=> article._id=== action.payload._id? action.payload : article );
+                return {
+                    ...state,
+                    allArticles:state.allArticles.map((article)=>article._id===action.payload?action.payload:article)
+                }
+                    
         case DELETE:
-            return articles.filter((article)=> article._id!== action.payload);
+            return {
+                ...state,
+                allArticles:state.allArticles.filter((article)=>article._id!==action.payload),
+                userArt:state.userArt.filter((article)=>article._id!==action.payload)
+            }
+            // articles.filter((article)=> article._id!== action.payload);
         default:
-            return articles;
+            return state;
             
     }
 }

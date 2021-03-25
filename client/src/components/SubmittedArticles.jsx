@@ -1,20 +1,34 @@
-import React,{useEffect} from 'react'
+import React,{useEffect,useState} from 'react'
 import styled from 'styled-components';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import { useDispatch, useSelector } from 'react-redux';
-import {deleteArt} from '../actions/articles';
+import {deleteArt,getUserArt} from '../actions/articles';
 import {Link} from 'react-router-dom';
 
 
 const SubmittedArticles = ({setCurrentId, setNavitems}) => {
     const dispatch = useDispatch();
-    const articles = useSelector((state)=> state.articles.filter((item)=>item.userid===state.authReducer.authData?.userid ) );
-    
+    const userId = JSON.parse(localStorage.getItem("user")).userid;
+    const userArt = useSelector((state)=> state.articles.allArticles.filter((item)=>item.userid===userId ) );
+    const fetchUserArt = useSelector((state)=>state.articles.userArt);
+
+    const [articles, setArticles] = useState(userArt);
+    console.log(fetchUserArt);
     
     useEffect(()=>{
         setNavitems((navitems)=>({...navitems,item1:{...navitems.item1,text:'Write',type:''} }));
-    },[setNavitems])
+        async function fetchUserArt() {
+            if(articles?.length<1){
+                await dispatch(getUserArt(userId));
+            }
+        }
+        fetchUserArt();
+    },[setNavitems,fetchUserArt,userId,dispatch,articles?.length ])
+
+    useEffect(()=>{
+        setArticles(fetchUserArt)
+    },[fetchUserArt])
     
 
     return (

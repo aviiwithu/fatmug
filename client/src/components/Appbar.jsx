@@ -22,7 +22,7 @@ useEffect(()=>{
 
 setUser(JSON.parse(localStorage.getItem('user')));
 
-},[location,user?.token])
+},[location,user?.token]);
 
 
     return (
@@ -35,7 +35,7 @@ setUser(JSON.parse(localStorage.getItem('user')));
             <RightNav>
                 <form  > 
                     <ButtonContainer>
-                            <Button onClick={navitems.item1.type==='submit'?handleSubmit:()=>{}} > 
+                            <Button onClick={navitems.item1.type==='submit'?handleSubmit:null} > 
                         <NavLink to='/new'  > 
                                 {navitems.item1.text}
                         </NavLink>

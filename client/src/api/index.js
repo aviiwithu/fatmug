@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const url = axios.create({baseURL: 'https://fatmug.herokuapp.com/'});
+// const url = axios.create({baseURL: 'https://fatmug.herokuapp.com/'});
+const url = axios.create({baseURL: 'http://localhost:5000'});
 
 url.interceptors.request.use((req)=> {
     if (localStorage.getItem('user')) {
@@ -16,3 +17,6 @@ export const deleteArt = (id)=> url.delete(`/art/${id}`);
 
 export const signup = (authData)=>url.post(`/auth/signup`, authData );
 export const signin = (authData)=>url.post(`/auth/signin`, authData );
+
+export const getOne = (id)=>url.get(`/art/${id}`,{id});
+export const getUserArt = (id)=>url.get(`/art/user/${id}`,{id});

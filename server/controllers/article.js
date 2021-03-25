@@ -3,10 +3,33 @@ import mongoose from 'mongoose';
 import postArticle from '../models/postArticle.js'
 
 export const getArt = async (req,res) => {
+    
     try {
         const getArt = await postArticle.find();
 
         res.status(200).json(getArt);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
+
+export const getOne = async (req,res) => {
+      const {id} = req.params;
+    try {
+        const getoneArt = await postArticle.findById(id);
+
+        res.status(200).json(getoneArt);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
+export const getUserArt = async (req,res) => {  
+    const {id} = req.params;
+            
+    try {
+        const getUserArt = await postArticle.find({userid:id})
+
+        res.status(200).json(getUserArt);
     } catch (error) {
         res.status(404).json({message:error.message});
     }

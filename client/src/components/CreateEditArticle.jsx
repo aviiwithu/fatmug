@@ -5,12 +5,12 @@ import { useSelector} from 'react-redux';
 
 const CreateEditArticle = ({currentId, setNavitems,article, setArticle,handleSubmit,clear }) => {
 
-    const checkarticle = useSelector((state)=>currentId?state.articles.find((a)=>a._id===currentId):null );
+    const checkarticle = useSelector((state)=>currentId?state.articles.allArticles.find((a)=>a._id===currentId):null );
     
 
     useEffect(()=>{
-        if(checkarticle) return setArticle(checkarticle); 
         setNavitems((navitems)=>({...navitems,item1:{...navitems.item1,text:'Publish',type:'submit'} }));
+        if(checkarticle) return setArticle(checkarticle); 
         setName(); // eslint-disable-next-line
     },[setNavitems,setArticle,checkarticle])
 

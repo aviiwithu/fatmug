@@ -41,7 +41,7 @@ export const signin = async(req,res)=>{
 
         if(!checkPassword) return res.status(404).json({message:'invalid credentials'});
 
-        const token = jwt.sign({email:oldUser.email,id:oldUser._id}, process.env.JWT_SECRET, {expiresIn: '1h'});
+        const token = jwt.sign({email:oldUser.email,userid:oldUser._id}, process.env.JWT_SECRET, {expiresIn: '1h'});
 
         res.status(200).json({email:oldUser.email,userid:oldUser._id, name:oldUser.name, token});
 
