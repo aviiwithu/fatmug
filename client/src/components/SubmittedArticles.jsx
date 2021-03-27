@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from 'react'
 import styled from 'styled-components';
+import {motion} from 'framer-motion';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,9 +37,9 @@ const SubmittedArticles = ({setCurrentId, setNavitems}) => {
             <Heading>
                 <p>Your submitted articles</p>
             </Heading>
-                <div>
+                <motion.div initial={{y:30}} animate={{y:0}} >
                     { articles.map((art)=>(
-                        <Articles key={art._id} >
+                        <Articles key={art._id}  >
                             <ImageWrapper>
                                 <img src={art.selectedFile} alt=""/>
                             </ImageWrapper>
@@ -55,7 +56,7 @@ const SubmittedArticles = ({setCurrentId, setNavitems}) => {
                         </Articles>
                         
                     )) }
-                </div>
+                </motion.div>
                 
         </Wrapper>
     )
@@ -76,7 +77,7 @@ font-size: 24px;
 line-height: 45px;
 letter-spacing: 0.21em;
 `
-const Articles = styled.div`
+const Articles = styled(motion.div)`
 padding:10px 0;
 display:grid;
 grid-template-columns: 20% 70% 10%;

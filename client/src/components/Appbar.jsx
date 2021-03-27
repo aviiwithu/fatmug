@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react';
-import styled from 'styled-components'
+import styled from 'styled-components';
+import {motion} from 'framer-motion';
 import {NavLink, useHistory, useLocation} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import { LOGOUT } from '../constants/actionType';
@@ -26,7 +27,7 @@ setUser(JSON.parse(localStorage.getItem('user')));
 
 
     return (
-        <Wrapper>
+        <Wrapper as={motion.div} initial={{y:-100}} animate={{y:0}} >
             <LeftNav>
                 <NavLink to="/" >
                     <strong> FATMUG |</strong> Greetings {user?user.name:"Guest"}
@@ -60,7 +61,9 @@ setUser(JSON.parse(localStorage.getItem('user')));
 export default Appbar
 
 const Wrapper = styled.div`
-/* display:grid; */
+display: flex;
+justify-content: space-between;
+border-bottom:1px solid black;
 grid-template-columns: 65% 35%;
 margin:20px 10px;
 padding: 10px;

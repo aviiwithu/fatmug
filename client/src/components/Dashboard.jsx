@@ -1,5 +1,6 @@
 import React,{useEffect} from 'react';
 import styled from 'styled-components';
+import {motion} from 'framer-motion';
 import InfoIcon from '@material-ui/icons/Info';
 import {useSelector, useDispatch} from 'react-redux';
 import {Link, useHistory} from 'react-router-dom';
@@ -16,7 +17,7 @@ const Dashboard = ({setNavitems}) => {
 
     },[setNavitems,history,dispatch])
     return (
-        <Wrapper>
+        <Wrapper as={motion.div} initial={{scale:0.2}} animate={{scale:1}} transition={{duration:0.3}} >
                 <div>
                     {articles.map((art)=>(
                             <PostedArticle key={art._id}>

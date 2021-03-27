@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from 'react'
 import styled from 'styled-components';
+import {motion} from 'framer-motion';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import moment from 'moment';
 import {useSelector,useDispatch} from 'react-redux';
@@ -34,12 +35,12 @@ const ViewArticle = ({setNavitems,match}) => {
 
 
     return (
-        <Wrapper>
+        <Wrapper  >
             <ImageSection>
-                <img src={art?.selectedFile} alt="img"/>
+                <motion.img src={art?.selectedFile} alt="img" initial={{scale:0.6}} animate={{scale:1}} transition={{duration:0.3}} />
             </ImageSection>
 
-            <TextSection>
+            <TextSection initial={{y:'50vh'}} animate={{y:0}} transition={{duration:0.6}} >
                 <Heading>
                     <h2>{art?.title}</h2>
                     <span> {moment(art?.createdAt).fromNow() } <strong>6 min read </strong> </span>
@@ -59,7 +60,7 @@ const ViewArticle = ({setNavitems,match}) => {
 
 export default ViewArticle
 
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
 width:80%;
 margin:auto;
 
@@ -71,7 +72,7 @@ img{
     object-fit:cover;
 }
 `
-const TextSection = styled.div`
+const TextSection = styled(motion.div)`
 
 `
 const Heading = styled.div`
