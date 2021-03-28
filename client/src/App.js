@@ -9,6 +9,7 @@ import Login from './components/Login'
 import {Switch, Route, useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {updateArt,createArt} from './actions/articles';
+import Auth from './Auth';
 
 function App() {
   const dispatch = useDispatch();
@@ -45,14 +46,28 @@ const clear =()=>{
       <Route path='/login' exact render={(props)=> (<Login {...props} currentId={currentId} setCurrentId={setCurrentId} setNavitems={setNavitems} />) } />
       <>
         <Appbar navitems={navitems} currentId={currentId} setCurrentId={setCurrentId} handleSubmit={handleSubmit}  />
-        <Route path='/' exact render={(props)=> (<Dashboard {...props} currentId={currentId} setCurrentId={setCurrentId} setNavitems={setNavitems} />) } />
-        <Route path='/new' exact render={(props)=> (<CreateEditArticle {...props} clear={clear} article={article} handleSubmit={handleSubmit} setArticle={setArticle} currentId={currentId} setCurrentId={setCurrentId} setNavitems={setNavitems} />) } />
-        <Route path='/art/:id' exact render={(props)=> (<ViewArticle {...props} setNavitems={setNavitems} />) } />
-        <Route path='/articles' exact render={(props)=> (<SubmittedArticles {...props} currentId={currentId} setCurrentId={setCurrentId} setNavitems={setNavitems} />) } />
+        {/* <Route path='/' exact render={(props)=> (<Dashboard {...props} currentId={currentId} setCurrentId={setCurrentId} setNavitems={setNavitems} />) } /> */}
+        {/* <Route path='/new' exact render={(props)=> (<CreateEditArticle {...props} clear={clear} article={article} handleSubmit={handleSubmit} setArticle={setArticle} currentId={currentId} setCurrentId={setCurrentId} setNavitems={setNavitems} />) } /> */}
+        {/* <Route path='/art/:id' exact render={(props)=> (<ViewArticle {...props} setNavitems={setNavitems} />) } /> */}
+        {/* <Route path='/articles' exact render={(props)=> (<SubmittedArticles {...props} currentId={currentId} setCurrentId={setCurrentId} setNavitems={setNavitems} />) } /> */}
+        
+        <Route path='/articles' exact  >
+          <Auth Component={SubmittedArticles} currentId={currentId} setCurrentId={setCurrentId} setNavitems={setNavitems} />
+        </Route>
+
+        <Route path='/art/:id' exact  >
+          <Auth Component={ViewArticle} setNavitems={setNavitems} /> 
+        </Route>
+        <Route path='/new' exact  >
+          <Auth Component={CreateEditArticle} clear={clear} article={article} handleSubmit={handleSubmit} setArticle={setArticle} currentId={currentId} setCurrentId={setCurrentId} setNavitems={setNavitems} />
+        </Route>
+
+        <Route path='/' exact  >
+          <Auth Component={Dashboard} currentId={currentId} setCurrentId={setCurrentId} setNavitems={setNavitems} />
+        </Route>
+      
       </>
     </Switch>
-           
-      
       </>
   );
 }

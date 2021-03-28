@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
 import styled from 'styled-components';
+import {motion } from 'framer-motion';
 import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import { signup, signin } from '../actions/authActions';
@@ -10,7 +11,7 @@ const Login = () => {
     const history = useHistory();
 
     const [isLogin, setIsLogin] = useState(true);
-    const [authData, setAuthData] = useState({ firstName:'', lastName:'', email:'',password:'',confirmPassword:'' });
+    const [authData, setAuthData] = useState({ firstName:'', lastName:'', email:'a@gmail.com',password:'123',confirmPassword:'' });
 
     const handleSubmit=(e)=>{
         e.preventDefault();
@@ -24,27 +25,40 @@ const Login = () => {
         setAuthData({...authData, [e.target.name]:e.target.value})
     }
 
+    const rotateVariants={
+        hidden:{
+            rotateX:90
+        },
+        visible:{
+            rotateX:0,
+            transition:{
+                duration:0.5
+            }
+        }
+    }
+
     return (
-        <Wrapper>
+        <Wrapper  >
             
             &nbsp;
-            <Container>    
-                <Form onSubmit={handleSubmit} >
-                {isLogin?<h2>Login</h2>:<h2>create a new account</h2> }
+            <Container initial={{y:'-80vh'}} animate={{y:0}} transition={{duration:0.5, delay:0.2}} >                  
+                <Form as={motion.form} onSubmit={handleSubmit} >
+                {isLogin?<h2  >Login</h2>:
+                <motion.h2 variants={rotateVariants} initial="hidden" animate="visible" >create a new account</motion.h2> }
                     {isLogin?null:<>
-                        <input type="text" name='firstName' onChange={handleChange} placeholder="First Name" />
-                        <input type="text" name="lastName" onChange={handleChange} placeholder="Last Name" />
+                        <motion.input initial={{rotateX:90}} animate={{rotateX:0}} transition={{duration:0.5}} type="text" name='firstName' onChange={handleChange} placeholder="First Name" />
+                        <motion.input initial={{rotateX:90}} animate={{rotateX:0}} transition={{duration:0.5}} type="text" name="lastName" onChange={handleChange} placeholder="Last Name" />
                         </>
                     }
                     <input type="email" name='email' onChange={handleChange} placeholder="email" />
                     <input type="password" name='password' onChange={handleChange} placeholder="password" />
-                    {isLogin?null:<input type="password" name="confirmPassword" onChange={handleChange} placeholder="confirm password" /> } 
+                    {isLogin?null:<motion.input variants={rotateVariants} initial="hidden" animate="visible" type="password" name="confirmPassword" onChange={handleChange} placeholder="confirm password" /> } 
                     <div>
                         <p>{isLogin?"Forgot Password":null} </p>
                         <p className="toggleLogin" onClick={()=>setIsLogin(!isLogin)} > {isLogin?"Not a Member yet":"Login" } </p>
                     </div>
-                    <button type="submit" >submit</button>
-                </Form>
+                    <motion.button whileHover={{scale:1.1}} type="submit" >submit</motion.button>
+                </Form> 
                 
             </Container>
 
@@ -58,7 +72,7 @@ const Wrapper = styled.div`
 background:#757474;
 height:100vh;
 `
-const Container = styled.div`
+const Container = styled(motion.div)`
 width:34%;
 margin:auto;
 max-width:750px;

@@ -4,13 +4,18 @@ import {motion} from 'framer-motion';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import moment from 'moment';
 import {useSelector,useDispatch} from 'react-redux';
-import {getOne} from '../actions/articles'
+import {useParams} from 'react-router-dom'
+import {getOne} from '../actions/articles';
+import readingTime from 'reading-time';
 
 
-const ViewArticle = ({setNavitems,match}) => {
+const ViewArticle = ({props}) => {
+    const {id} = useParams();
+    const {setNavitems} = props;
+    
     const dispatch = useDispatch();
     const view = useSelector((state)=>state.view);
-    const id = match.params.id;
+   
     const article = useSelector((state)=>state.articles.allArticles.find((item)=>item._id===id) );
         
     const [art, setArt] = useState(article);
@@ -20,7 +25,8 @@ const ViewArticle = ({setNavitems,match}) => {
                 async function fetchdata() {
                     if(!article) {
                         await dispatch(getOne(id));
-                        console.log("article is not available")
+                        console.log("article is loading from server");
+
                     }
                 }
                 fetchdata();
@@ -31,19 +37,21 @@ const ViewArticle = ({setNavitems,match}) => {
             setArt(view);
         }
 
-    },[view,article])
+    },[view,article,art])
+
+    const {text} = readingTime(art?.description);
 
 
     return (
         <Wrapper  >
             <ImageSection>
-                <motion.img src={art?.selectedFile} alt="img" initial={{scale:0.6}} animate={{scale:1}} transition={{duration:0.3}} />
+                <motion.img src={art?.selectedFile} alt="img" initial={{scale:0.7}} animate={{scale:1}} transition={{duration:0.5}} />
             </ImageSection>
 
-            <TextSection initial={{y:'50vh'}} animate={{y:0}} transition={{duration:0.6}} >
+            <TextSection initial={{y:'30vh'}} animate={{y:0}} transition={{duration:0.6}} >
                 <Heading>
                     <h2>{art?.title}</h2>
-                    <span> {moment(art?.createdAt).fromNow() } <strong>6 min read </strong> </span>
+                    <span> {moment(art?.createdAt).fromNow() } <strong> {text} </strong> </span>
                 </Heading>
                 <Text>
                     {art?.description}

@@ -1,15 +1,17 @@
 import React,{useEffect} from 'react';
 import styled from 'styled-components';
-import {motion} from 'framer-motion';
+import {motion } from 'framer-motion';
 import InfoIcon from '@material-ui/icons/Info';
 import {useSelector, useDispatch} from 'react-redux';
 import {Link, useHistory} from 'react-router-dom';
 import {getArt} from '../actions/articles'
 
-const Dashboard = ({setNavitems}) => {
+const Dashboard = ({props}) => {
     const articles = useSelector((state)=> state.articles.allArticles );
     const history = useHistory();
     const dispatch = useDispatch();
+
+    const {setNavitems} = props;
 
     useEffect(()=>{
         setNavitems((navitems)=>({...navitems,item1:{...navitems.item1,text:'Write',type:''} }));
@@ -18,6 +20,7 @@ const Dashboard = ({setNavitems}) => {
     },[setNavitems,history,dispatch])
     return (
         <Wrapper as={motion.div} initial={{scale:0.2}} animate={{scale:1}} transition={{duration:0.3}} >
+
                 <div>
                     {articles.map((art)=>(
                             <PostedArticle key={art._id}>
@@ -29,13 +32,14 @@ const Dashboard = ({setNavitems}) => {
                                         <h3>
                                         {art.title}
                                         </h3>
-                                        <div>
+                                        <div className="description">
                                         {art.description}
                                         </div>
                                 </Link>
                     </PostedArticle>
 
                     )) }
+                    
                 </div>
                
 
@@ -114,6 +118,7 @@ const PostedArticle = styled.div`
 transition: ease-in-out 0.3s;
 padding: 8px 10px;
 margin-bottom:15px;
+
 a{
     text-decoration:none;
     color:inherit;
@@ -126,7 +131,11 @@ p{
     box-shadow: 0 0 8px 0px #c6bfbf;
 }
 div{
-    font-size: 14px;
+    font-size: 15px;  
+}
+.description{
+    max-height:8rem;
+    overflow:hidden;
 }
 `
 const HeroArticleImage = styled.div`

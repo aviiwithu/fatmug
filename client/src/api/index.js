@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const url = axios.create({baseURL: 'https://fatmug.herokuapp.com/'});
-const url = axios.create({baseURL: 'http://localhost:5000'});
+const url = axios.create({baseURL: 'https://fatmug-server.herokuapp.com/'});
+// const url = axios.create({baseURL: 'http://localhost:5000'});
 
 url.interceptors.request.use((req)=> {
     if (localStorage.getItem('user')) {

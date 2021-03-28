@@ -27,7 +27,7 @@ setUser(JSON.parse(localStorage.getItem('user')));
 
 
     return (
-        <Wrapper as={motion.div} initial={{y:-100}} animate={{y:0}} >
+        <Wrapper as={motion.div} initial={{y:-100}} animate={{y:0}} transition={{duration:0.5, delay:1, type:"spring",stiffness:150}} >
             <LeftNav>
                 <NavLink to="/" >
                     <strong> FATMUG |</strong> Greetings {user?user.name:"Guest"}

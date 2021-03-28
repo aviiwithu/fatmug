@@ -2,9 +2,11 @@ import React,{useEffect} from 'react';
 import styled from 'styled-components';
 import FileBase from 'react-file-base64';
 import { useSelector} from 'react-redux';
+import {motion} from 'framer-motion';
 
-const CreateEditArticle = ({currentId, setNavitems,article, setArticle,handleSubmit,clear }) => {
+const CreateEditArticle = ({props}) => {
 
+    const {currentId, setNavitems,article, setArticle,handleSubmit,clear } = props;
     const checkarticle = useSelector((state)=>currentId?state.articles.allArticles.find((a)=>a._id===currentId):null );
     
 
@@ -26,15 +28,15 @@ const CreateEditArticle = ({currentId, setNavitems,article, setArticle,handleSub
     return (
         <Wrapper>
             <form onSubmit={handleSubmit} >    
-                <Title>
+                <Title initial={{y:-60}} animate={{y:0}} >
                     <p>Title</p>
                     <input type="text" placeholder='title' value={article.title} name="title" onChange={handleChange} />
                 </Title>
-                <Description>
+                <Description initial={{opacity:0}} animate={{opacity:1}} transition={{duration:0.3}} >
                     <p>Description</p>
                     <textarea type="text" placeholder="your article here" value={article.description} name='description' onChange={handleChange} />
                 </Description>
-                <Upload>
+                <Upload  >
                     <FileBase type='file' multiple={false} onDone={({base64})=> setArticle({...article, selectedFile:base64 }) }/>
                     <img src={article.selectedFile} alt=""/>
                 </Upload>
@@ -47,14 +49,14 @@ const CreateEditArticle = ({currentId, setNavitems,article, setArticle,handleSub
 
 export default CreateEditArticle
 
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
 width:70%;
 margin:auto;
 @media (max-width: 480px) {
     width:90%;
   }
 `
-const Title = styled.div`
+const Title = styled(motion.div)`
 font-weight: 600;
 font-size: 20px;
 line-height: 37px;
@@ -70,7 +72,7 @@ input{
     padding: 8px 8px;
 }
 `
-const Description = styled.div`
+const Description = styled(motion.div)`
 text-transform:uppercase;
 margin-top: 3rem;
 font-weight: 600;
@@ -91,12 +93,13 @@ textarea{
   }
 }
 `
-const Upload = styled.div`
+const Upload = styled(motion.div)`
 margin-top:1rem;
 img{
-    width:100%;
+    width: 100%;
     margin: 2rem 0;
-    
+    object-fit: cover;
+    max-height: 20rem;    
 }
 `
 const ClearBtn = styled.button`
@@ -107,4 +110,5 @@ const ClearBtn = styled.button`
     border-radius: 6px;
     font-size: 1rem;
     outline:none;
+    cursor: pointer;
 `

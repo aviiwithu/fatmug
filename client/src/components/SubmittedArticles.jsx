@@ -8,38 +8,51 @@ import {deleteArt,getUserArt} from '../actions/articles';
 import {Link} from 'react-router-dom';
 
 
-const SubmittedArticles = ({setCurrentId, setNavitems}) => {
+const SubmittedArticles = ({props}) => {
+
+    const {setCurrentId, setNavitems} = props;
     const dispatch = useDispatch();
     const userId = JSON.parse(localStorage.getItem("user")).userid;
     const userArt = useSelector((state)=> state.articles.allArticles.filter((item)=>item.userid===userId ) );
-    const fetchUserArt = useSelector((state)=>state.articles.userArt);
-
+    const fetchArt = useSelector((state)=>state.articles.userArt);
     const [articles, setArticles] = useState(userArt);
-    console.log(fetchUserArt);
-    
+        
     useEffect(()=>{
         setNavitems((navitems)=>({...navitems,item1:{...navitems.item1,text:'Write',type:''} }));
         async function fetchUserArt() {
-            if(articles?.length<1){
+            if(articles.length===0){
                 await dispatch(getUserArt(userId));
             }
         }
         fetchUserArt();
-    },[setNavitems,fetchUserArt,userId,dispatch,articles?.length ])
+    },[setNavitems,fetchArt,userId,dispatch,articles.length ])
 
     useEffect(()=>{
-        setArticles(fetchUserArt)
-    },[fetchUserArt])
+        if(articles.length===0){
+            setArticles(fetchArt);
+        }
+    },[fetchArt,articles.length])
     
-
+    const containerVariants={
+        visible:{
+            y:0, opacity:1,
+            transition:{staggerChildren: 0.1,}
+        }
+    }
+    const itemVariants ={
+        hidden:{ y:40 },
+        visible:{ y:0,
+        transition:{ duration:0.3,ease:"easeInOut"}}
+    }
+  
     return (
         <Wrapper>
             <Heading>
                 <p>Your submitted articles</p>
             </Heading>
-                <motion.div initial={{y:30}} animate={{y:0}} >
+                <motion.div variants={containerVariants} initial="hidden" animate="visible"  >
                     { articles.map((art)=>(
-                        <Articles key={art._id}  >
+                        <Articles key={art._id} variants={itemVariants}  >
                             <ImageWrapper>
                                 <img src={art.selectedFile} alt=""/>
                             </ImageWrapper>
