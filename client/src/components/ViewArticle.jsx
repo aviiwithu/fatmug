@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from 'react'
+import React,{useEffect} from 'react'
 import styled from 'styled-components';
 import {motion} from 'framer-motion';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
@@ -14,54 +14,39 @@ const ViewArticle = ({props}) => {
     const {setNavitems} = props;
     
     const dispatch = useDispatch();
-    const view = useSelector((state)=>state.view);
+    const art = useSelector((state)=>state.view.article);
    
-    const article = useSelector((state)=>state.articles.allArticles.find((item)=>item._id===id) );
-        
-    const [art, setArt] = useState(article);
-        
+    
     useEffect(()=>{
                 setNavitems((navitems)=>({...navitems,item1:{...navitems.item1,text:'Write',type:''} }));
-                async function fetchdata() {
-                    if(!article) {
-                        await dispatch(getOne(id));
-                        console.log("article is loading from server");
-
-                    }
-                }
-                fetchdata();
-    },[setNavitems,dispatch,article,id]);
-
-    useEffect(()=>{
-        if(!article) {
-            setArt(view);
-        }
-
-    },[view,article,art])
-
-    const {text} = readingTime(art?.description);
-
-
+                dispatch(getOne(id));
+                
+            },[setNavitems,dispatch,id]);         
+               
     return (
         <Wrapper  >
-            <ImageSection>
-                <motion.img src={art?.selectedFile} alt="img" initial={{scale:0.7}} animate={{scale:1}} transition={{duration:0.5}} />
-            </ImageSection>
+            {!art?<h1>Loading...</h1> :(
+            <>
+                <ImageSection>
+                    <motion.img src={art?.selectedFile} alt="img" initial={{scale:0.7}} animate={{scale:1}} transition={{duration:0.5}} />
+                </ImageSection>
 
-            <TextSection initial={{y:'30vh'}} animate={{y:0}} transition={{duration:0.6}} >
-                <Heading>
-                    <h2>{art?.title}</h2>
-                    <span> {moment(art?.createdAt).fromNow() } <strong> {text} </strong> </span>
-                </Heading>
-                <Text>
-                    {art?.description}
-                </Text>
-                <Info>
-                    <PersonOutlineIcon /> By 
-                    <strong> ‏‏‎ ‎{art?.creator} </strong>
+                <TextSection initial={{y:'30vh'}} animate={{y:0}} transition={{duration:0.6}} >
+                    <Heading>
+                        <h2>{art?.title}</h2>
+                        <span> {moment(art?.createdAt).fromNow() } <strong> {readingTime(art?.description).text}  </strong> </span>
+                    </Heading>
+                    <Text>
+                        {art?.description}
+                    </Text>
+                    <Info>
+                        <PersonOutlineIcon /> By 
+                        <strong> ‏‏‎ ‎{art?.creator} </strong>
 
-                </Info>
-            </TextSection>
+                    </Info>
+                </TextSection>
+            </> )
+                }
         </Wrapper>
     )
 }

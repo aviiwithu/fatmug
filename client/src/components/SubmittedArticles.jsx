@@ -1,38 +1,25 @@
-import React,{useEffect,useState} from 'react'
+import React,{useEffect} from 'react'
 import styled from 'styled-components';
 import {motion} from 'framer-motion';
 import EditIcon from '@material-ui/icons/Edit';
+import {LinearProgress } from '@material-ui/core'
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import { useDispatch, useSelector } from 'react-redux';
-import {deleteArt,getUserArt} from '../actions/articles';
+import {deleteArt, getUserArt} from '../actions/articles';
 import {Link} from 'react-router-dom';
-
 
 const SubmittedArticles = ({props}) => {
 
     const {setCurrentId, setNavitems} = props;
     const dispatch = useDispatch();
     const userId = JSON.parse(localStorage.getItem("user")).userid;
-    const userArt = useSelector((state)=> state.articles.allArticles.filter((item)=>item.userid===userId ) );
-    const fetchArt = useSelector((state)=>state.articles.userArt);
-    const [articles, setArticles] = useState(userArt);
-        
+    const articles = useSelector((state)=> state.articles.userArt);
+            
     useEffect(()=>{
         setNavitems((navitems)=>({...navitems,item1:{...navitems.item1,text:'Write',type:''} }));
-        async function fetchUserArt() {
-            if(articles.length===0){
-                await dispatch(getUserArt(userId));
-            }
-        }
-        fetchUserArt();
-    },[setNavitems,fetchArt,userId,dispatch,articles.length ])
-
-    useEffect(()=>{
-        if(articles.length===0){
-            setArticles(fetchArt);
-        }
-    },[fetchArt,articles.length])
-    
+        dispatch(getUserArt(userId));
+    },[setNavitems,dispatch,userId ])
+   
     const containerVariants={
         visible:{
             y:0, opacity:1,
@@ -47,6 +34,8 @@ const SubmittedArticles = ({props}) => {
   
     return (
         <Wrapper>
+        {!articles?<LinearProgress />:
+            <>
             <Heading>
                 <p>Your submitted articles</p>
             </Heading>
@@ -70,8 +59,10 @@ const SubmittedArticles = ({props}) => {
                         
                     )) }
                 </motion.div>
+                </>
+                }
                 
-        </Wrapper>
+        </Wrapper> 
     )
 }
 

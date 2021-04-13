@@ -1,13 +1,14 @@
 import {FETCH_ALL, CREATE, DELETE, UPDATE,FETCH_USER_ART } from '../constants/actionType';
 
 const initialState={
-    allArticles:[],
-    userArt:[]
+    allArticles:null,
+    userArt:null
 }
 
 export const articles=(state=initialState,action)=>{
     switch(action.type){
         case FETCH_ALL:
+            localStorage.setItem('allArt', JSON.stringify({...action.payload}) );
             return {
                 ...state,
                 allArticles:action.payload
@@ -32,7 +33,7 @@ export const articles=(state=initialState,action)=>{
             return {
                 ...state,
                 allArticles:state.allArticles.filter((article)=>article._id!==action.payload),
-                userArt:state.userArt.filter((article)=>article._id!==action.payload)
+                userArt:state.userArt.filter((art)=>art._id!==action.payload)
             }
             // articles.filter((article)=> article._id!== action.payload);
         default:

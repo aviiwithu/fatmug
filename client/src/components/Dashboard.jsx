@@ -2,9 +2,10 @@ import React,{useEffect} from 'react';
 import styled from 'styled-components';
 import {motion } from 'framer-motion';
 import InfoIcon from '@material-ui/icons/Info';
+import { LinearProgress } from '@material-ui/core';
 import {useSelector, useDispatch} from 'react-redux';
 import {Link, useHistory} from 'react-router-dom';
-import {getArt} from '../actions/articles'
+import {getArt} from '../actions/articles';
 
 const Dashboard = ({props}) => {
     const articles = useSelector((state)=> state.articles.allArticles );
@@ -19,9 +20,10 @@ const Dashboard = ({props}) => {
 
     },[setNavitems,history,dispatch])
     return (
-        <Wrapper as={motion.div} initial={{scale:0.2}} animate={{scale:1}} transition={{duration:0.3}} >
-
-                <div>
+        <>
+        {!articles?<LinearProgress/>:
+        <Wrapper >        
+                <motion.div initial={{scale:0.2}} animate={{scale:1}} transition={{duration:0.3}} >
                     {articles.map((art)=>(
                             <PostedArticle key={art._id}>
                                 <Link to={`/art/${art._id}`} >
@@ -40,10 +42,10 @@ const Dashboard = ({props}) => {
 
                     )) }
                     
-                </div>
-               
-
-            
+                </motion.div>
+                {/* ################################################################ */}
+               {/* ##################  TOP ARTICLES SECTION  ######################### */}
+               {/* ###################################################################### */}
             <TopArticles>
                         <h2>TOP ARTICLES</h2>
                 <div>
@@ -100,7 +102,8 @@ const Dashboard = ({props}) => {
                 </div>
 
             </TopArticles>
-        </Wrapper>
+        </Wrapper> }
+        </>
     )
 }
 
